@@ -4,8 +4,9 @@ import './screens/main_screen.dart';
 import './screens/settings_screen.dart';
 import './screens/settings/setting_notifications.dart';
 import './screens/settings/setting_info.dart';
+import './screens/splash_screen.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -23,10 +24,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      home: SplashScreen(),
       routes: {
+        '/main': (context) => MainScreen(),
         '/settings': (context) => SettingsScreen(),
-        '/settings/nofications': (context) => SettingNotificationsScreen(),
+        '/settings/notifications': (context) => SettingNotificationsScreen(),
         '/settings/info': (context) => SettingInfoScreen(),
       },
     );

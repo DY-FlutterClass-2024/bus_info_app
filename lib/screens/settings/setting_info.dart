@@ -47,7 +47,6 @@ class SettingInfoScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
               Text(
                 '© Copyright 2024. suzukaotto All rights reserved.',
                 style: TextStyle(color: Colors.white, fontSize: 12),

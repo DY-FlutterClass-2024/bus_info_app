@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'map_view_screen.dart';
+import 'package:flutter/services.dart';
+import './map_view_screen.dart';
 import './nearby_station_screen.dart';
 import './manage_shc_screen.dart';
 
@@ -21,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<String> _titles = [
     '지도화면',
     '주변정류소',
-    '승하차 관리',
+    '승하차관리',
   ];
 
   void _navigateTo(int index) {
@@ -55,7 +57,13 @@ class _MainScreenState extends State<MainScreen> {
             DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFF1D1B20)),
               child: Center(
-                child: Text('메뉴', style: TextStyle(color: Colors.white, fontSize: 24)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center, // Center vertically
+                  children: [
+                    Text('승하차알리미', style: TextStyle(color: Colors.white, fontSize: 24)),
+                    Text('ver 1.0', style: TextStyle(color: Colors.white30, fontSize: 10)),
+                  ],
+                ),
               ),
             ),
             ListTile(
@@ -70,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             ListTile(
               leading: Icon(Icons.manage_accounts, color: Colors.white),
-              title: Text('승하차 관리', style: TextStyle(color: Colors.white)),
+              title: Text('승하차관리', style: TextStyle(color: Colors.white)),
               onTap: () => _navigateTo(2),
             ),
             ListTile(
@@ -84,7 +92,34 @@ class _MainScreenState extends State<MainScreen> {
               leading: Icon(Icons.exit_to_app, color: Colors.white),
               title: Text('앱 종료', style: TextStyle(color: Colors.white)),
               onTap: () {
-                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Color(0xFF1D1B20),
+                      title: Text('앱 종료', style: TextStyle(color: Colors.white)),
+                      content: Text('앱을 종료하시겠습니까?\n승하차알림이 종료됩니다.', style: TextStyle(color: Colors.white)),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('취소'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text('확인'),
+                          onPressed: () {
+                            if (Platform.isAndroid) {
+                              SystemNavigator.pop();
+                            } else {
+                              exit(0);
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],

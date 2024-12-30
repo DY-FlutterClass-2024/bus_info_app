@@ -111,8 +111,9 @@ class NearbyStationScreenState extends State<NearbyStationScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Center(
                           child: Text(
-                            '마지막 갱신 시간: ${lastUpdated != null ? lastUpdated!.toLocal().toString() : 'N/A'}',
-                            style: TextStyle(color: Colors.white),
+                            '${_locationData.latitude != null ? _locationData.latitude.toString() : 'N/A'}, ${_locationData.longitude != null ? _locationData.longitude.toString() : 'N/A'}\n'
+                            '마지막 갱신 시간: ${lastUpdated != null ? lastUpdated!.toLocal().toString() : 'N/A'}\n',
+                            style: TextStyle(color: Colors.white60),
                           ),
                         ),
                       );
