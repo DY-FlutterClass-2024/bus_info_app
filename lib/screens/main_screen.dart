@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/common_widget.dart';
 import 'map_view_screen.dart';
 import './nearby_station_screen.dart';
 import './manage_shc_screen.dart';
@@ -91,9 +90,12 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        child: _screens[_currentIndex],
       ),
     );
   }

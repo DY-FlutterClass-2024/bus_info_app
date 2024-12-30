@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:bus_info_app_2/utils/google_maps_style.dart';
 
 class MapViewScreen extends StatefulWidget {
   @override
@@ -47,11 +46,11 @@ class _MapViewScreenState extends State<MapViewScreen> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    mapController.setMapStyle(darkMapStyle); // Use the imported map style
     if (currentLocation != null) {
       mapController.animateCamera(
-        CameraUpdate.newLatLng(
+        CameraUpdate.newLatLngZoom(
           LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+          15.0, // 확대 수준을 높임
         ),
       );
     }
@@ -60,16 +59,13 @@ class _MapViewScreenState extends State<MapViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('지도 화면'),
-      ),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
           target: currentLocation != null
               ? LatLng(currentLocation!.latitude!, currentLocation!.longitude!)
               : _defaultLocation,
-          zoom: 11.0,
+          zoom: 16.0, // 확대 수준을 높임
         ),
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
