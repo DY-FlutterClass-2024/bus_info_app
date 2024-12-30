@@ -42,7 +42,7 @@ class SettingInfoScreen extends StatelessWidget {
                   SizedBox(width: 8), // Space between icon and text
                   Text(
                     'https://github.com/DY-FlutterClass-2024/bus_info_app.git',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: Colors.white, fontSize: 10),
                     textAlign: TextAlign.center,
                   ),
                 ],

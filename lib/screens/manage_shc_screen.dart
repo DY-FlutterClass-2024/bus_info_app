@@ -8,7 +8,7 @@ class ManageShcScreen extends StatelessWidget {
       body: Center(
         child: Text(
           '설정된 승하차 알림이 없습니다',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
     );

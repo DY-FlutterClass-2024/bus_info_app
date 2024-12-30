@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:location/location.dart';
 
 class NearbyStationScreen extends StatefulWidget {
+  const NearbyStationScreen({Key? key}) : super(key: key);
+
   @override
-  _NearbyStationScreenState createState() => _NearbyStationScreenState();
+  NearbyStationScreenState createState() => NearbyStationScreenState();
 }
 
-class _NearbyStationScreenState extends State<NearbyStationScreen> {
-  late Future<List<dynamic>> futureStations;
+class NearbyStationScreenState extends State<NearbyStationScreen> {
+  late Future<List<dynamic>> futureStations = Future.value([]);
   DateTime? lastUpdated;
+  Location location = Location();
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  late LocationData _locationData;
 
   Future<List<dynamic>> fetchStations(double x, double y) async {
     final response = await http.get(Uri.parse('http://api.szk.kr/businfo/station/search/coor?x=$x&y=$y'));
@@ -23,21 +30,37 @@ class _NearbyStationScreenState extends State<NearbyStationScreen> {
     }
   }
 
+  Future<void> _getLocation() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    setState(() {
+      futureStations = fetchStations(_locationData.longitude!, _locationData.latitude!);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    // Replace with actual coordinates
-    final double x = 127.215169;
-    final double y = 37.240443;
-    futureStations = fetchStations(x, y);
+    _getLocation();
   }
 
   Future<void> _refresh() async {
-    final double x = 127.215169;
-    final double y = 37.240443;
-    setState(() {
-      futureStations = fetchStations(x, y);
-    });
+    await _getLocation();
   }
 
   @override
@@ -53,23 +76,31 @@ class _NearbyStationScreenState extends State<NearbyStationScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('정보를 불러오는 중 오류가 발생했습니다.'),
-                      Text('잠시 후 다시 시도해주세요.'),
-                    ],
-                  ),
+                return ListView(
+                  children: [
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('정보를 불러오는 중 오류가 발생했습니다.'),
+                          Text('잠시 후 다시 시도해주세요.'),
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('현재 위치 주변에 정류소가 없습니다.')
-                    ],
-                  ),
+                return ListView(
+                  children: [
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('현재 위치 주변에 정류소가 없습니다.')
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               } else {
                 return ListView.builder(
