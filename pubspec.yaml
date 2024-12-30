@@ -7,9 +7,13 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
-  flutter_native_splash: ^2.4.4
   flutter:
     sdk: flutter
+  permission_handler: ^10.2.0
+  http: ^0.13.3
+  flutter_local_notifications: ^18.0.1
+  google_maps_flutter: ^2.10.0
+  location: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +22,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.png
