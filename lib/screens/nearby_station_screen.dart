@@ -121,13 +121,19 @@ class NearbyStationScreenState extends State<NearbyStationScreen> {
                       final station = snapshot.data![index];
                       return Card(
                         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: ListTile(
-                          leading: Icon(Icons.directions_bus, size: 40, color: Colors.white),
-                          title: Text(
-                            station['stationName'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                        child: InkWell(
+                          onTap: () {
+                            // Handle tap event here
+                            print('Tapped on ${station['stationName']}');
+                          },
+                          child: ListTile(
+                            leading: Icon(Icons.directions_bus, size: 40, color: Colors.white),
+                            title: Text(
+                              station['stationName'],
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text('정류장번호: ${station['mobileNo']}\n거리: ${station['distance']}m'),
                           ),
-                          subtitle: Text('정류장번호: ${station['mobileNo']}\n거리: ${station['distance']}m'),
                         ),
                       );
                     }
