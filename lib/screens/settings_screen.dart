@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _selectedLanguage = newValue!;
                 });
               },
-              items: <String>['한국어', 'English(지원X)', '日本語(지원X)']
+              items: <String>['한국어']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -49,14 +49,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Navigate to language settings
             },
           ),
-          ListTile(
-            leading: Icon(Icons.notifications, color: Colors.white),
-            title: Text('알림', style: TextStyle(color: Colors.white)),
-            trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-            onTap: () {
-              Navigator.pushNamed(context, '/settings/nofications');
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.notifications, color: Colors.white),
+          //   title: Text('알림', style: TextStyle(color: Colors.white)),
+          //   trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/settings/nofications');
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.info, color: Colors.white),
             title: Text('앱 정보', style: TextStyle(color: Colors.white)),
