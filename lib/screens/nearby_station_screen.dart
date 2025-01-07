@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:location/location.dart';
+import 'map_view_screen.dart'; // Add this line
 
 class NearbyStationScreen extends StatefulWidget {
   const NearbyStationScreen({Key? key}) : super(key: key);
@@ -58,11 +59,11 @@ class NearbyStationScreenState extends State<NearbyStationScreen> {
     super.initState();
     _getLocation();
   }
-
+  
   Future<void> _refresh() async {
     await _getLocation();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -78,6 +79,7 @@ class NearbyStationScreenState extends State<NearbyStationScreen> {
               } else if (snapshot.hasError) {
                 return ListView(
                   children: [
+                    SizedBox(height: 16),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -96,6 +98,7 @@ class NearbyStationScreenState extends State<NearbyStationScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SizedBox(height: 16),
                           Text('현재 위치 주변에 정류소가 없습니다.')
                         ],
                       ),
@@ -120,11 +123,19 @@ class NearbyStationScreenState extends State<NearbyStationScreen> {
                     } else {
                       final station = snapshot.data![index];
                       return Card(
-                        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        margin: EdgeInsets.only(top: 16, left: 12.0, right: 12.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(8.0),
                           onTap: () {
-                            // Handle tap event here
-                            print('Tapped on ${station['stationName']}');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MapViewScreen(stationId: station['stationId'].toString()),
+                              ),
+                            );
                           },
                           child: ListTile(
                             leading: Icon(Icons.directions_bus, size: 40, color: Colors.white),
